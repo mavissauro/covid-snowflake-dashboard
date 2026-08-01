@@ -1,0 +1,7 @@
+.venv/
+.streamlit/secrets.toml
+.streamlit/*.p8
+.streamlit/*.pub
+__pycache__/
+*.pyc
+.DS_Store
