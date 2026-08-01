@@ -30,12 +30,19 @@ def get_snowflake_session():
     params = connection_parameters.copy()
     
     # Ler a chave privada (Key-Pair Auth)
-    with open(".streamlit/rsa_key.p8", "rb") as key_file:
+    if "private_key" in st.secrets.get("snowflake", {}):
         p_key = serialization.load_pem_private_key(
-            key_file.read(),
+            st.secrets["snowflake"]["private_key"].encode('utf-8'),
             password=None,
             backend=default_backend()
         )
+    else:
+        with open(".streamlit/rsa_key.p8", "rb") as key_file:
+            p_key = serialization.load_pem_private_key(
+                key_file.read(),
+                password=None,
+                backend=default_backend()
+            )
         
     pkb = p_key.private_bytes(
         encoding=serialization.Encoding.DER,
